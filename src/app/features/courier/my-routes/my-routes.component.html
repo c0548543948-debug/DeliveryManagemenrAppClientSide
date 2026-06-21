@@ -1,0 +1,53 @@
+<div class="my-routes">
+  <h1 class="page-title">My Routes</h1>
+
+  @if (errorMessage) { <div class="alert alert-error">{{ errorMessage }}</div> }
+
+  @if (loading) {
+    <div class="loading-center"><span class="spinner spinner-dark spinner-lg"></span></div>
+  } @else {
+    <div class="section">
+      <h2 class="section-title">📅 Today — {{ today }}</h2>
+      @if (todayRoutes.length === 0) {
+        <div class="card">
+          <div class="empty-state">🗓️ No routes scheduled for today.</div>
+        </div>
+      } @else {
+        @for (route of todayRoutes; track route.routeId) {
+          <div class="card route-card">
+            <div class="route-info">
+              <div class="route-title">Route #{{ route.routeId }}</div>
+              <div class="route-meta">
+                🕐 {{ route.startTime }} – {{ route.endTime }}
+                | 📍 {{ route.items.length }} stops
+                @if (route.vehicleId) { | 🚛 Vehicle #{{ route.vehicleId }} }
+              </div>
+            </div>
+            <div class="route-actions">
+              <a class="btn btn-primary" [routerLink]="['/courier/route-detail', route.routeId]">
+                🚀 Start Route
+              </a>
+            </div>
+          </div>
+        }
+      }
+    </div>
+
+    @if (otherRoutes.length > 0) {
+      <div class="section">
+        <h2 class="section-title">📚 Past & Upcoming Routes</h2>
+        @for (route of otherRoutes; track route.routeId) {
+          <div class="card route-card past">
+            <div class="route-info">
+              <div class="route-title">Route #{{ route.routeId }}</div>
+              <div class="route-meta">📅 {{ route.date }} | 🕐 {{ route.startTime }} – {{ route.endTime }} | 📍 {{ route.items.length }} stops</div>
+            </div>
+            <div class="route-actions">
+              <a class="btn btn-outline btn-sm" [routerLink]="['/courier/route-detail', route.routeId]">View</a>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

@@ -1,0 +1,46 @@
+<div class="dashboard">
+  <h1 class="page-title">Dashboard</h1>
+
+  @if (loading) {
+    <div class="loading-center"><span class="spinner spinner-dark spinner-lg"></span></div>
+  } @else {
+    <div class="stats-grid">
+      @for (stat of stats; track stat.title) {
+        <div class="stat-card" [class]="stat.colorClass">
+          <div class="stat-icon">{{ stat.icon }}</div>
+          <div class="stat-info">
+            <div class="stat-value">{{ stat.value }}</div>
+            <div class="stat-title">{{ stat.title }}</div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">Recent Orders</h2>
+      @if (recentOrders.length === 0) {
+        <div class="empty-state">No orders found.</div>
+      } @else {
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Order #</th><th>From</th><th>To</th><th>Status</th><th>Price</th><th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of recentOrders; track order.orderId) {
+              <tr>
+                <td><strong>#{{ order.orderId }}</strong></td>
+                <td class="truncate">{{ order.originAddress }}</td>
+                <td class="truncate">{{ order.destinationAddress }}</td>
+                <td><span class="badge" [class]="'badge-' + getStatusLabel(order.status).toLowerCase().replace(' ', '-')">{{ getStatusLabel(order.status) }}</span></td>
+                <td>${{ order.price | number:'1.2-2' }}</td>
+                <td>{{ order.requiredDate }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  }
+</div>

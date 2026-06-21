@@ -1,0 +1,57 @@
+<div class="couriers-page">
+  <div class="page-header">
+    <h1 class="page-title mb-0">Couriers</h1>
+    <button class="btn btn-primary" (click)="openAddForm()">+ Add Courier</button>
+  </div>
+
+  @if (message) { <div class="alert" [class]="'alert-' + messageType">{{ message }}</div> }
+
+  @if (showForm) {
+    <div class="card form-card">
+      <h3 class="section-title">{{ editingCourier ? 'Edit Courier' : 'Add Courier' }}</h3>
+      <form [formGroup]="courierForm" (ngSubmit)="saveForm()">
+        <div class="form-group">
+          <label class="form-label">Application User ID</label>
+          <input class="form-control" formControlName="applicationUserId" placeholder="User ID" />
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost" (click)="showForm = false">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="courierForm.invalid">
+            {{ editingCourier ? 'Update' : 'Create' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+
+  <div class="card">
+    @if (loading) {
+      <div class="loading-center"><span class="spinner spinner-dark spinner-lg"></span></div>
+    } @else if (couriers.length === 0) {
+      <div class="empty-state">No couriers found. Add one to get started.</div>
+    } @else {
+      <table class="table">
+        <thead><tr><th>ID</th><th>User ID</th><th>Actions</th></tr></thead>
+        <tbody>
+          @for (c of couriers; track c.courierId) {
+            <tr>
+              <td>{{ c.courierId }}</td>
+              <td>{{ c.applicationUserId }}</td>
+              <td>
+                <div class="action-btns">
+                  <button class="btn btn-outline btn-sm" (click)="editCourier(c)">✏️ Edit</button>
+                  <button class="btn btn-danger btn-sm" (click)="confirmDelete(c)">🗑 Delete</button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>
+
+<app-confirm-dialog [visible]="deleteDialogVisible" title="Delete Courier"
+  [message]="'Delete courier #' + (courierToDelete?.courierId || '') + '?'"
+  confirmText="Delete" (confirmed)="onDeleteConfirmed()" (cancelled)="onDeleteCancelled()">
+</app-confirm-dialog>

@@ -1,0 +1,65 @@
+<div class="track-order">
+  <h1 class="page-title">📍 Track Order #{{ orderId }}</h1>
+
+  <div class="card status-card">
+    <div class="conn-row">
+      <div class="conn-indicator" [class.connected]="connected">
+        {{ connected ? '🟢 Live Tracking Active' : '⚪ Not Connected' }}
+      </div>
+      @if (connecting) {
+        <div class="connecting"><span class="spinner spinner-dark"></span> Connecting...</div>
+      }
+      @if (!connected && !connecting) {
+        <button class="btn btn-primary" (click)="startTracking()">▶ Connect</button>
+      }
+      @if (connected) {
+        <button class="btn btn-outline" (click)="stopTracking()">⏹ Disconnect</button>
+      }
+    </div>
+    @if (error) {
+      <div class="alert alert-error mt-8">{{ error }}</div>
+    }
+  </div>
+
+  @if (currentLocation) {
+    <div class="card location-card">
+      <div class="loc-header">
+        <h3>Current Location</h3>
+        <span class="text-muted text-sm">Updated: {{ formatTime(currentLocation.timestamp) }}</span>
+      </div>
+      <div class="coords">
+        <div class="coord-item">
+          <div class="coord-label">Latitude</div>
+          <div class="coord-value">{{ currentLocation.lat | number:'1.6-6' }}</div>
+        </div>
+        <div class="coord-item">
+          <div class="coord-label">Longitude</div>
+          <div class="coord-value">{{ currentLocation.lng | number:'1.6-6' }}</div>
+        </div>
+      </div>
+      <a class="btn btn-outline mt-16" [href]="getMapsUrl()" target="_blank">🗺️ View on Google Maps</a>
+    </div>
+  } @else if (connected) {
+    <div class="card">
+      <div class="waiting">
+        <div class="waiting-icon">📡</div>
+        <p>Waiting for courier location update...</p>
+      </div>
+    </div>
+  }
+
+  @if (locationHistory.length > 0) {
+    <div class="card">
+      <h3 class="section-title">Location History</h3>
+      <div class="history-list">
+        @for (loc of locationHistory; track loc.timestamp) {
+          <div class="history-item">
+            <span class="history-dot">📍</span>
+            <span>{{ loc.lat | number:'1.4-4' }}, {{ loc.lng | number:'1.4-4' }}</span>
+            <span class="history-time">{{ formatTime(loc.timestamp) }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

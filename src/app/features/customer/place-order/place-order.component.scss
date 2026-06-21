@@ -1,0 +1,15 @@
+.place-order { max-width: 700px; }
+.section-title { font-size: 16px; font-weight: 600; margin: 20px 0 12px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+.addr-field { display: flex; align-items: center; gap: 8px; .form-control { flex: 1; } }
+.validation-result {
+  margin-top: 4px; padding: 6px 10px; border-radius: 4px; font-size: 13px;
+  &.valid { background: #e8f5e9; color: #2e7d32; }
+  &.invalid { background: #ffebee; color: #c62828; }
+}
+.price-box {
+  display: flex; align-items: center; gap: 10px; background: #e3f2fd; border-radius: 8px;
+  padding: 14px 20px; margin: 16px 0; font-size: 15px;
+  strong { font-size: 22px; font-weight: 700; color: #1565c0; margin-left: 4px; }
+  &.price-result { border: 1px solid #90caf9; }
+}
+.form-actions { margin-top: 24px; display: flex; justify-content: flex-end; }

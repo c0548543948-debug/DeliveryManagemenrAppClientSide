@@ -1,0 +1,16 @@
+<div class="customer-layout">
+  <nav class="topnav">
+    <div class="nav-brand">🚚 DeliveryApp</div>
+    <div class="nav-links">
+      <a routerLink="/customer/my-orders" routerLinkActive="active">📋 My Orders</a>
+      <a routerLink="/customer/place-order" routerLinkActive="active">➕ Place Order</a>
+    </div>
+    <div class="nav-user">
+      <span class="user-email">{{ authService.getUserEmail() }}</span>
+      <button class="btn btn-ghost btn-sm" (click)="logout()">Logout</button>
+    </div>
+  </nav>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

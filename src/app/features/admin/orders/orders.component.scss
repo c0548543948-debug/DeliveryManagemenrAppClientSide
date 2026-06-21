@@ -1,0 +1,8 @@
+.orders-page { max-width: 1400px; }
+.filters { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
+  .form-control { max-width: 300px; }
+}
+.table-wrap { overflow-x: auto; }
+.addr-cell { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pagination { display: flex; align-items: center; gap: 16px; justify-content: center; margin-top: 16px; }
+.page-info { color: #666; }

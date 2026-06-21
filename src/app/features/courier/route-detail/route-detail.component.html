@@ -1,0 +1,54 @@
+<div class="route-detail">
+  <h1 class="page-title">Route #{{ routeId }}</h1>
+
+  @if (successMessage) { <div class="alert alert-success">{{ successMessage }}</div> }
+  @if (errorMessage) { <div class="alert alert-error">{{ errorMessage }}</div> }
+
+  @if (loading) {
+    <div class="loading-center"><span class="spinner spinner-dark spinner-lg"></span></div>
+  } @else if (!route) {
+    <div class="card"><div class="empty-state">Route not found.</div></div>
+  } @else {
+    <div class="card route-info">
+      <div class="info-grid">
+        <div class="info-item"><span class="info-label">📅 Date</span><span>{{ route.date }}</span></div>
+        <div class="info-item"><span class="info-label">🕐 Time</span><span>{{ route.startTime }} – {{ route.endTime }}</span></div>
+        <div class="info-item"><span class="info-label">📍 Stops</span><span>{{ route.items.length }}</span></div>
+        @if (route.vehicleId) {
+          <div class="info-item"><span class="info-label">🚛 Vehicle</span><span>#{{ route.vehicleId }}</span></div>
+        }
+      </div>
+    </div>
+
+    @if (lastLocation) {
+      <div class="alert alert-info">
+        📍 Last location sent: {{ lastLocation.lat | number:'1.4-4' }}, {{ lastLocation.lng | number:'1.4-4' }}
+      </div>
+    }
+
+    <h2 class="section-title">Stops</h2>
+
+    @for (item of route.items; track item.id) {
+      <div class="card stop-card">
+        <div class="stop-number">{{ item.stopOrder }}</div>
+        <div class="stop-icon">{{ getStopIcon(item.stopType) }}</div>
+        <div class="stop-info">
+          <div class="stop-type">{{ getStopLabel(item.stopType) }}</div>
+          <div class="stop-order">Order #{{ item.orderId }}</div>
+          @if (item.estimatedArrival) { <div class="stop-eta">ETA: {{ item.estimatedArrival }}</div> }
+        </div>
+        <div class="stop-actions">
+          <button class="btn btn-outline btn-sm" [disabled]="updatingLocation" (click)="sendLocation(item.orderId)">
+            @if (updatingLocation) { <span class="spinner spinner-dark"></span> }
+            📍 Send Location
+          </button>
+          @if (item.stopType === 1) {
+            <button class="btn btn-success btn-sm" (click)="markDelivered(item)">
+              ✅ Mark Delivered
+            </button>
+          }
+        </div>
+      </div>
+    }
+  }
+</div>

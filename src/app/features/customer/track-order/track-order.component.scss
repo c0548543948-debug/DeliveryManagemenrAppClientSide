@@ -1,0 +1,21 @@
+.track-order { max-width: 700px; }
+.status-card { }
+.conn-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.conn-indicator {
+  padding: 8px 16px; border-radius: 20px; font-weight: 500; font-size: 14px;
+  background: #f5f5f5; color: #555;
+  &.connected { background: #e8f5e9; color: #2e7d32; }
+}
+.connecting { display: flex; align-items: center; gap: 8px; color: #555; }
+.location-card { }
+.loc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; h3 { margin: 0; font-size: 16px; } }
+.coords { display: flex; gap: 40px; }
+.coord-item { }
+.coord-label { font-size: 12px; color: #999; text-transform: uppercase; margin-bottom: 4px; }
+.coord-value { font-size: 20px; font-weight: 600; color: #333; }
+.waiting { text-align: center; padding: 32px; color: #999; .waiting-icon { font-size: 48px; margin-bottom: 12px; } }
+.section-title { font-size: 15px; font-weight: 600; margin: 0 0 12px; }
+.history-list { max-height: 280px; overflow-y: auto; }
+.history-item { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+.history-dot { font-size: 14px; }
+.history-time { margin-left: auto; color: #999; }

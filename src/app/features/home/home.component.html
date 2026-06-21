@@ -1,0 +1,167 @@
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a class="nav-brand" routerLink="/">
+      <span class="brand-icon">🚚</span>
+      <span class="brand-name">DeliveryPro</span>
+    </a>
+    <div class="nav-actions">
+      @if (authService.isAuthenticated()) {
+        <button class="btn btn-outline-white" (click)="goToLogin()">Go to Dashboard</button>
+      } @else {
+        <a class="btn btn-outline-white" routerLink="/login">Sign In</a>
+        <a class="btn btn-white" routerLink="/register">Get Started</a>
+      }
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">📦 Anywhere to Anywhere</div>
+    <h1 class="hero-title">
+      Deliveries that<br>
+      <span class="hero-accent">actually arrive on time</span>
+    </h1>
+    <p class="hero-subtitle">
+      Smart routing, live GPS tracking, and instant price estimates.<br>
+      From any address to any address — fast, reliable, transparent.
+    </p>
+    <div class="hero-cta">
+      <button class="btn btn-hero-primary" (click)="scrollToOrder()">
+        📦 Get a Price Quote
+      </button>
+      <a class="btn btn-hero-outline" routerLink="/login">
+        Track My Order →
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><strong>5,000+</strong><span>Deliveries/month</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><strong>98%</strong><span>On-time rate</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><strong>30 min</strong><span>Avg. pickup time</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-map-card">
+      <div class="map-dot pickup">📍</div>
+      <div class="route-line"></div>
+      <div class="map-dot delivery">🏠</div>
+      <div class="courier-badge">🛵 En route · 12 min</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="section-inner">
+    <h2 class="section-title">Why choose DeliveryPro?</h2>
+    <div class="features-grid">
+      @for (f of features; track f.title) {
+        <div class="feature-card">
+          <div class="feature-icon">{{ f.icon }}</div>
+          <h3>{{ f.title }}</h3>
+          <p>{{ f.desc }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ORDER FORM -->
+<section class="order-section" id="order-section">
+  <div class="section-inner">
+    <div class="order-header">
+      <h2 class="section-title white">Get an instant quote</h2>
+      <p class="section-sub">Fill in the details below — see your price before you commit.</p>
+    </div>
+
+    <div class="order-card">
+      <form [formGroup]="orderForm" (ngSubmit)="submitOrder()">
+        <div class="order-grid">
+          <div class="form-group">
+            <label class="form-label">📍 Pickup Address</label>
+            <input class="form-control" formControlName="originAddress"
+                   placeholder="e.g. 50 Main St, City" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">🏠 Delivery Address</label>
+            <input class="form-control" formControlName="destinationAddress"
+                   placeholder="e.g. 10 Oak Ave, City" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">⚖️ Weight (kg)</label>
+            <input class="form-control" type="number" formControlName="weight"
+                   placeholder="e.g. 2.5" min="0.1" step="0.1" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">📦 Volume (m³)</label>
+            <input class="form-control" type="number" formControlName="volume"
+                   placeholder="e.g. 0.05" min="0.01" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">📅 Required Date</label>
+            <input class="form-control" type="date" formControlName="requiredDate" />
+          </div>
+        </div>
+
+        <div class="order-footer">
+          <div class="order-note">
+            🔒 You'll need to sign in or create an account to confirm your order
+          </div>
+          <button type="submit" class="btn btn-hero-primary btn-lg" [disabled]="orderForm.invalid">
+            Continue to Book →
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-it-works">
+  <div class="section-inner">
+    <h2 class="section-title">How it works</h2>
+    <div class="steps">
+      @for (s of steps; track s.num) {
+        <div class="step">
+          <div class="step-num">{{ s.num }}</div>
+          <h3>{{ s.title }}</h3>
+          <p>{{ s.desc }}</p>
+        </div>
+        @if (!$last) { <div class="step-arrow">→</div> }
+      }
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <div class="section-inner cta-inner">
+    <div>
+      <h2>Ready to send your first package?</h2>
+      <p>Join thousands of customers who trust DeliveryPro every day.</p>
+    </div>
+    <div class="cta-buttons">
+      <a class="btn btn-white btn-lg" routerLink="/register">Create Free Account</a>
+      <a class="btn btn-outline-white btn-lg" routerLink="/login">Sign In</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="section-inner footer-inner">
+    <div class="footer-brand">
+      <span>🚚 DeliveryPro</span>
+      <p>Fast, smart, reliable deliveries — anywhere to anywhere.</p>
+    </div>
+    <div class="footer-links">
+      <a routerLink="/login">Sign In</a>
+      <a routerLink="/register">Register</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 DeliveryPro. All rights reserved.</div>
+</footer>

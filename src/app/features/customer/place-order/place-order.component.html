@@ -1,0 +1,76 @@
+<div class="place-order">
+  <h1 class="page-title">Place New Order</h1>
+
+  @if (errorMessage) { <div class="alert alert-error">{{ errorMessage }}</div> }
+
+  <div class="card">
+    <form [formGroup]="orderForm" (ngSubmit)="submitOrder()">
+      <h3 class="section-title">📍 Addresses</h3>
+
+      <div class="form-group">
+        <label class="form-label">Origin Address</label>
+        <div class="addr-field">
+          <input class="form-control" formControlName="originAddress"
+                 placeholder="Enter pickup address" (blur)="validateOrigin()" />
+          @if (validatingOrigin) { <span class="spinner spinner-dark"></span> }
+        </div>
+        @if (originValidation) {
+          <div class="validation-result" [class.valid]="originValidation.isValid" [class.invalid]="!originValidation.isValid">
+            {{ originValidation.isValid ? '✅ ' + originValidation.formattedAddress : '❌ Address not found' }}
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Destination Address</label>
+        <div class="addr-field">
+          <input class="form-control" formControlName="destinationAddress"
+                 placeholder="Enter delivery address" (blur)="validateDest()" />
+          @if (validatingDest) { <span class="spinner spinner-dark"></span> }
+        </div>
+        @if (destValidation) {
+          <div class="validation-result" [class.valid]="destValidation.isValid" [class.invalid]="!destValidation.isValid">
+            {{ destValidation.isValid ? '✅ ' + destValidation.formattedAddress : '❌ Address not found' }}
+          </div>
+        }
+      </div>
+
+      <h3 class="section-title">📦 Package Details</h3>
+
+      <div class="form-row form-row-3">
+        <div class="form-group">
+          <label class="form-label">Weight (kg)</label>
+          <input class="form-control" type="number" formControlName="weight" min="0.1" step="0.1"
+                 (change)="tryCalculatePrice()" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Volume (m³)</label>
+          <input class="form-control" type="number" formControlName="volume" min="0.01" step="0.01"
+                 (change)="tryCalculatePrice()" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Required Date</label>
+          <input class="form-control" type="date" formControlName="requiredDate"
+                 (change)="tryCalculatePrice()" />
+        </div>
+      </div>
+
+      @if (calculatingPrice) {
+        <div class="price-box">
+          <span class="spinner spinner-dark"></span> Calculating price...
+        </div>
+      } @else if (estimatedPrice !== null) {
+        <div class="price-box price-result">
+          💰 Estimated Price: <strong>${{ estimatedPrice | number:'1.2-2' }}</strong>
+        </div>
+      }
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-lg" [disabled]="orderForm.invalid || submitting">
+          @if (submitting) { <span class="spinner"></span> }
+          🚀 Place Order
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

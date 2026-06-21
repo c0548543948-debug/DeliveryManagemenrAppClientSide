@@ -1,0 +1,20 @@
+<div class="customers-page">
+  <h1 class="page-title">Customers</h1>
+  @if (errorMessage) { <div class="alert alert-error">{{ errorMessage }}</div> }
+  <div class="card">
+    @if (loading) {
+      <div class="loading-center"><span class="spinner spinner-dark spinner-lg"></span></div>
+    } @else if (customers.length === 0) {
+      <div class="empty-state">No customers found.</div>
+    } @else {
+      <table class="table">
+        <thead><tr><th>ID</th><th>User ID</th><th>Phone</th></tr></thead>
+        <tbody>
+          @for (c of customers; track c.customerId) {
+            <tr><td>{{ c.customerId }}</td><td>{{ c.applicationUserId }}</td><td>{{ c.phone }}</td></tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>

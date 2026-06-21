@@ -1,0 +1,62 @@
+<div class="routes-page">
+  <div class="page-header">
+    <h1 class="page-title mb-0">Routes</h1>
+    <div class="header-actions">
+      <input type="date" class="form-control date-input" [(ngModel)]="selectedDate" />
+      <button class="btn btn-primary" (click)="optimizeRoutes()" [disabled]="optimizing">
+        @if (optimizing) { <span class="spinner"></span> }
+        ⚡ Optimize Routes
+      </button>
+      <button class="btn btn-accent" (click)="batchOptimize()" [disabled]="optimizing">
+        📦 Batch Optimize
+      </button>
+    </div>
+  </div>
+
+  @if (message) { <div class="alert" [class]="'alert-' + messageType">{{ message }}</div> }
+
+  @if (loading) {
+    <div class="loading-center"><span class="spinner spinner-dark spinner-lg"></span></div>
+  } @else if (routes.length === 0) {
+    <div class="card"><div class="empty-state">No routes found. Run optimization to generate routes.</div></div>
+  } @else {
+    @for (route of routes; track route.routeId) {
+      <div class="card route-card">
+        <div class="route-header" (click)="toggleRoute(route.routeId)">
+          <div class="route-summary">
+            <strong>Route #{{ route.routeId }}</strong>
+            <span class="text-muted">— Courier #{{ route.courierId }}</span>
+            <span class="badge badge-pending">{{ route.items.length }} stops</span>
+          </div>
+          <div class="route-meta">
+            <span>📅 {{ route.date }}</span>
+            <span>🕐 {{ route.startTime }} – {{ route.endTime }}</span>
+            @if (route.vehicleId) { <span>🚛 Vehicle #{{ route.vehicleId }}</span> }
+          </div>
+          <div class="route-actions">
+            <button class="btn btn-outline btn-sm" (click)="openMap(route.routeId); $event.stopPropagation()">🗺️ Map</button>
+            <span class="expand-icon">{{ expandedRouteId === route.routeId ? '▲' : '▼' }}</span>
+          </div>
+        </div>
+
+        @if (expandedRouteId === route.routeId) {
+          <div class="route-stops">
+            <table class="table">
+              <thead><tr><th>Stop</th><th>Order #</th><th>Type</th><th>ETA</th></tr></thead>
+              <tbody>
+                @for (item of route.items; track item.id) {
+                  <tr>
+                    <td><strong>{{ item.stopOrder }}</strong></td>
+                    <td>#{{ item.orderId }}</td>
+                    <td><span class="badge" [class]="item.stopType === 0 ? 'badge-assigned' : 'badge-delivered'">{{ getStopLabel(item.stopType) }}</span></td>
+                    <td>{{ item.estimatedArrival || '—' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

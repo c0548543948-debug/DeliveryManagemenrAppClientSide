@@ -1,0 +1,16 @@
+.dashboard { max-width: 1200px; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card {
+  background: white; border-radius: 8px; padding: 20px; display: flex; align-items: center; gap: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  .stat-icon { font-size: 36px; }
+  .stat-value { font-size: 32px; font-weight: 700; line-height: 1; }
+  .stat-title { font-size: 13px; color: #666; margin-top: 4px; }
+  &.stat-blue { border-left: 4px solid #3f51b5; }
+  &.stat-orange { border-left: 4px solid #ff9800; }
+  &.stat-green { border-left: 4px solid #4caf50; }
+  &.stat-purple { border-left: 4px solid #9c27b0; }
+}
+.section-title { font-size: 16px; font-weight: 600; margin: 0 0 16px; }
+.truncate { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.badge-in { background: #e8f5e9; color: #2e7d32; }

@@ -1,0 +1,67 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <span class="logo-icon">🚚</span>
+      <h1>Create Account</h1>
+    </div>
+    <p class="auth-subtitle">Register as a customer</p>
+
+    @if (errorMessage) { <div class="alert alert-error">{{ errorMessage }}</div> }
+    @if (successMessage) { <div class="alert alert-success">{{ successMessage }}</div> }
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-row form-row-2">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input class="form-control" formControlName="firstName" />
+          @if (registerForm.get('firstName')?.errors?.['required'] && registerForm.get('firstName')?.touched) {
+            <span class="form-error">Required</span>
+          }
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input class="form-control" formControlName="lastName" />
+          @if (registerForm.get('lastName')?.errors?.['required'] && registerForm.get('lastName')?.touched) {
+            <span class="form-error">Required</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-control" type="email" formControlName="email" />
+        @if (registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched) {
+          <span class="form-error">Enter a valid email</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Phone</label>
+        <input class="form-control" type="tel" formControlName="phone" placeholder="+1 234 567 8900" />
+        @if (registerForm.get('phone')?.errors?.['pattern'] && registerForm.get('phone')?.touched) {
+          <span class="form-error">Enter a valid phone number</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="input-group">
+          <input class="form-control" [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
+          <button type="button" class="btn btn-ghost btn-icon input-addon" (click)="hidePassword = !hidePassword">
+            {{ hidePassword ? '👁' : '🙈' }}
+          </button>
+        </div>
+        @if (registerForm.get('password')?.errors?.['minlength'] && registerForm.get('password')?.touched) {
+          <span class="form-error">Password must be at least 6 characters</span>
+        }
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg full-width" [disabled]="registerForm.invalid || loading">
+        @if (loading) { <span class="spinner"></span> }
+        Create Account
+      </button>
+    </form>
+
+    <p class="auth-link">Already have an account? <a routerLink="/login">Sign in</a></p>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="vehicles-page">
+  <div class="page-header">
+    <h1 class="page-title mb-0">Vehicles</h1>
+    <button class="btn btn-primary" (click)="openAddForm()">+ Add Vehicle</button>
+  </div>
+
+  @if (message) { <div class="alert" [class]="'alert-' + messageType">{{ message }}</div> }
+
+  @if (showForm) {
+    <div class="card form-card">
+      <h3 class="section-title">{{ editingVehicle ? 'Edit Vehicle' : 'Add Vehicle' }}</h3>
+      <form [formGroup]="vehicleForm" (ngSubmit)="saveForm()">
+        <div class="form-row form-row-2">
+          <div class="form-group">
+            <label class="form-label">Type</label>
+            <select class="form-control" formControlName="type">
+              @for (t of vehicleTypes; track t.value) {
+                <option [value]="t.value">{{ t.label }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">License Plate</label>
+            <input class="form-control" formControlName="licensePlate" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Weight Capacity (kg)</label>
+            <input class="form-control" type="number" formControlName="capacityWeight" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Volume Capacity (m³)</label>
+            <input class="form-control" type="number" formControlName="capacityVolume" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost" (click)="showForm = false">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="vehicleForm.invalid">
+            {{ editingVehicle ? 'Update' : 'Create' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+
+  <div class="card">
+    @if (loading) {
+      <div class="loading-center"><span class="spinner spinner-dark spinner-lg"></span></div>
+    } @else if (vehicles.length === 0) {
+      <div class="empty-state">No vehicles found.</div>
+    } @else {
+      <table class="table">
+        <thead><tr><th>ID</th><th>Type</th><th>Weight Cap.</th><th>Volume Cap.</th><th>License Plate</th><th>Actions</th></tr></thead>
+        <tbody>
+          @for (v of vehicles; track v.vehicleId) {
+            <tr>
+              <td>{{ v.vehicleId }}</td>
+              <td>{{ v.type | vehicleType }}</td>
+              <td>{{ v.capacityWeight }} kg</td>
+              <td>{{ v.capacityVolume }} m³</td>
+              <td>{{ v.licensePlate }}</td>
+              <td>
+                <div class="action-btns">
+                  <button class="btn btn-outline btn-sm" (click)="editVehicle(v)">✏️ Edit</button>
+                  <button class="btn btn-danger btn-sm" (click)="confirmDelete(v)">🗑 Delete</button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>
+
+<app-confirm-dialog [visible]="deleteDialogVisible" title="Delete Vehicle"
+  [message]="'Delete vehicle ' + (vehicleToDelete?.licensePlate || '') + '?'"
+  confirmText="Delete" (confirmed)="onDeleteConfirmed()" (cancelled)="onDeleteCancelled()">
+</app-confirm-dialog>

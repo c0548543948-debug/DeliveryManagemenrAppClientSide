@@ -1,0 +1,73 @@
+<div class="orders-page">
+  <div class="page-header">
+    <h1 class="page-title mb-0">Orders</h1>
+  </div>
+
+  @if (successMessage) { <div class="alert alert-success">{{ successMessage }}</div> }
+  @if (errorMessage) { <div class="alert alert-error">{{ errorMessage }}</div> }
+
+  <div class="card">
+    <div class="filters">
+      <input class="form-control" type="search" [(ngModel)]="searchText"
+             (input)="applyFilter()" placeholder="Search by address or ID..." />
+      <select class="form-control" [(ngModel)]="statusFilter" (change)="applyFilter()">
+        @for (opt of statusOptions; track opt.value) {
+          <option [value]="opt.value">{{ opt.label }}</option>
+        }
+      </select>
+    </div>
+
+    @if (loading) {
+      <div class="loading-center"><span class="spinner spinner-dark spinner-lg"></span></div>
+    } @else {
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th><th>From</th><th>To</th><th>Weight</th><th>Volume</th><th>Price</th>
+              <th>Status</th><th>Date</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of pagedOrders; track order.orderId) {
+              <tr>
+                <td><strong>#{{ order.orderId }}</strong></td>
+                <td class="addr-cell">{{ order.originAddress }}</td>
+                <td class="addr-cell">{{ order.destinationAddress }}</td>
+                <td>{{ order.weight }} kg</td>
+                <td>{{ order.volume }} m³</td>
+                <td>${{ order.price | number:'1.2-2' }}</td>
+                <td><app-status-chip [status]="order.status"></app-status-chip></td>
+                <td>{{ order.requiredDate }}</td>
+                <td>
+                  <button class="btn btn-danger btn-sm btn-icon" (click)="confirmDelete(order)" title="Delete">🗑</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (filteredOrders.length === 0) {
+        <div class="empty-state">No orders match your filters.</div>
+      }
+
+      @if (totalPages > 1) {
+        <div class="pagination">
+          <button class="btn btn-ghost btn-sm" [disabled]="currentPage === 1" (click)="currentPage = currentPage - 1">← Prev</button>
+          <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
+          <button class="btn btn-ghost btn-sm" [disabled]="currentPage === totalPages" (click)="currentPage = currentPage + 1">Next →</button>
+        </div>
+      }
+    }
+  </div>
+</div>
+
+<app-confirm-dialog
+  [visible]="deleteDialogVisible"
+  title="Delete Order"
+  [message]="'Delete order #' + (orderToDelete?.orderId || '') + '?'"
+  confirmText="Delete"
+  (confirmed)="onDeleteConfirmed()"
+  (cancelled)="onDeleteCancelled()">
+</app-confirm-dialog>

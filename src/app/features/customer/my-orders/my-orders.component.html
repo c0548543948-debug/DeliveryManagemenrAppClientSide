@@ -1,0 +1,73 @@
+<div class="my-orders">
+  <div class="page-header">
+    <h1 class="page-title mb-0">My Orders</h1>
+    <a class="btn btn-primary" routerLink="/customer/place-order">+ New Order</a>
+  </div>
+
+  @if (errorMessage) { <div class="alert alert-error">{{ errorMessage }}</div> }
+
+  @if (loading) {
+    <div class="loading-center"><span class="spinner spinner-dark spinner-lg"></span></div>
+  } @else if (orders.length === 0) {
+    <div class="card empty-card">
+      <div class="empty-icon">📦</div>
+      <h3>No orders yet</h3>
+      <p>Place your first delivery order to get started.</p>
+      <a class="btn btn-primary" routerLink="/customer/place-order">Place Order</a>
+    </div>
+  } @else {
+    <div class="orders-grid">
+      @for (order of orders; track order.orderId) {
+        <div class="order-card card">
+          <div class="order-header">
+            <strong>Order #{{ order.orderId }}</strong>
+            <app-status-chip [status]="order.status"></app-status-chip>
+          </div>
+
+          <div class="address-section">
+            <div class="addr-row">
+              <span class="addr-dot origin">●</span>
+              <span class="addr-text">{{ order.originAddress }}</span>
+            </div>
+            <div class="addr-line"></div>
+            <div class="addr-row">
+              <span class="addr-dot dest">●</span>
+              <span class="addr-text">{{ order.destinationAddress }}</span>
+            </div>
+          </div>
+
+          <div class="order-details">
+            <div class="detail-item">
+              <span class="label">Weight</span>
+              <span>{{ order.weight }} kg</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Volume</span>
+              <span>{{ order.volume }} m³</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Date</span>
+              <span>{{ order.requiredDate }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Price</span>
+              <span class="price">${{ order.price | number:'1.2-2' }}</span>
+            </div>
+          </div>
+
+          @if (order.deliveryImageUrl) {
+            <img class="delivery-image" [src]="order.deliveryImageUrl" alt="Delivery confirmation" />
+          }
+
+          @if (canTrack(order)) {
+            <div class="order-actions">
+              <a class="btn btn-primary btn-sm" [routerLink]="['/customer/track-order', order.orderId]">
+                📍 Track Order
+              </a>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

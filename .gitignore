@@ -1,0 +1,20 @@
+# Node
+node_modules/
+*.log
+.npm/
+
+# Angular
+dist/
+tmp/
+.angular/
+.sass-cache/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System
+.DS_Store
+Thumbs.db
